@@ -1,0 +1,143 @@
+.food-item {
+  background-color: var(--surface);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  position: relative;
+}
+
+.food-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.food-item-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.food-favorite-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #f97316;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+.food-favorite-button:hover {
+  transform: scale(1.05);
+}
+
+.food-favorite-button.active {
+  background-color: #fde68a;
+}
+
+.food-item-details {
+  padding: 16px;
+}
+
+.food-item-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.food-item-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.food-item-rating {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.food-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quantity-controller {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-button {
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent);
+  background-color: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.quantity-button:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.quantity-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 30px;
+  text-align: center;
+}
+
+.add-to-cart-button {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-button:hover {
+  background-color: var(--accent-strong);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .food-item-image {
+    height: 160px;
+  }
+
+  .food-item-name {
+    font-size: 16px;
+  }
+
+  .food-item-price {
+    font-size: 14px;
+  }
+}
