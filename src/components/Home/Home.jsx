@@ -13,11 +13,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "./Home.css";
 
 const LIMIT = 9;
-const COST_RANGES = {
-  LOW: { label: "Budget", min: 0, max: 300 },
-  MEDIUM: { label: "Mid", min: 301, max: 600 },
-  HIGH: { label: "Premium", min: 601, max: Number.POSITIVE_INFINITY },
-};
 
 const testimonials = [
   {
@@ -81,9 +76,9 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     rating4: false,
-    cost: "",
     openNow: false,
     onlineDelivery: false,
+    vegType: "ALL",
   });
   const [recentRestaurants, setRecentRestaurants] = useState([]);
   const navigate = useNavigate();
@@ -179,8 +174,8 @@ const Home = () => {
     setActivePage(1);
   };
 
-  const handleCostChange = (e) => {
-    setFilters((prev) => ({ ...prev, cost: e.target.value }));
+  const handleVegTypeChange = (e) => {
+    setFilters((prev) => ({ ...prev, vegType: e.target.value }));
     setActivePage(1);
   };
 
@@ -190,8 +185,8 @@ const Home = () => {
       return;
     }
 
-    if (chipKey === "cost") {
-      setFilters((prev) => ({ ...prev, cost: "" }));
+    if (chipKey === "vegType") {
+      setFilters((prev) => ({ ...prev, vegType: "ALL" }));
       return;
     }
 
@@ -264,31 +259,36 @@ const Home = () => {
     const name = restaurant.name || "";
     const cuisine = restaurant.cuisine || "";
     const rating = Number(restaurant.user_rating?.rating || 0);
-    const costForTwo = Number(
-      restaurant.cost_for_two ?? restaurant.costForTwo ?? 0,
-    );
     const isOpen = restaurant.is_open ?? restaurant.isOpen ?? false;
     const hasOnlineDelivery =
       restaurant.has_online_delivery ?? restaurant.hasOnlineDelivery ?? false;
+    const isVegFlag = restaurant.is_veg ?? restaurant.isVeg;
+    const cuisineLower = cuisine.toLowerCase();
+    const isVegCuisine =
+      cuisineLower.includes("veg") || cuisineLower.includes("vegetarian");
+    const isNonVegCuisine =
+      cuisineLower.includes("non-veg") || cuisineLower.includes("non veg");
 
     const matchesSearch =
       !normalizedQuery ||
       name.toLowerCase().includes(normalizedQuery) ||
       cuisine.toLowerCase().includes(normalizedQuery);
     const matchesRating = !filters.rating4 || rating >= 4;
-    const costRange = COST_RANGES[filters.cost];
-    const matchesCost =
-      !filters.cost ||
-      (costForTwo >= costRange.min && costForTwo <= costRange.max);
     const matchesOpen = !filters.openNow || isOpen === true;
     const matchesOnline = !filters.onlineDelivery || hasOnlineDelivery === true;
+    const matchesVegType =
+      filters.vegType === "ALL" ||
+      (filters.vegType === "VEG" &&
+        (isVegFlag === true || isVegCuisine)) ||
+      (filters.vegType === "NON_VEG" &&
+        (isVegFlag === false || isNonVegCuisine));
 
     return (
       matchesSearch &&
       matchesRating &&
-      matchesCost &&
       matchesOpen &&
-      matchesOnline
+      matchesOnline &&
+      matchesVegType
     );
   });
 
@@ -299,17 +299,17 @@ const Home = () => {
   if (filters.rating4) {
     appliedChips.push({ key: "rating4", label: "Rating 4+" });
   }
-  if (filters.cost) {
-    appliedChips.push({
-      key: "cost",
-      label: `Cost: ${COST_RANGES[filters.cost].label}`,
-    });
-  }
   if (filters.openNow) {
     appliedChips.push({ key: "openNow", label: "Open now" });
   }
   if (filters.onlineDelivery) {
     appliedChips.push({ key: "onlineDelivery", label: "Online delivery" });
+  }
+  if (filters.vegType !== "ALL") {
+    appliedChips.push({
+      key: "vegType",
+      label: filters.vegType === "VEG" ? "Veg" : "Non-veg",
+    });
   }
 
   return (
@@ -398,19 +398,18 @@ const Home = () => {
                 Online delivery
               </label>
               <div className="filter-select-wrapper">
-                <label className="filter-select-label" htmlFor="costFilter">
-                  Cost for two
+                <label className="filter-select-label" htmlFor="vegFilter">
+                  Food type
                 </label>
                 <select
-                  id="costFilter"
+                  id="vegFilter"
                   className="filter-select"
-                  value={filters.cost}
-                  onChange={handleCostChange}
+                  value={filters.vegType}
+                  onChange={handleVegTypeChange}
                 >
-                  <option value="">Any</option>
-                  <option value="LOW">Budget (&lt;= 300)</option>
-                  <option value="MEDIUM">Mid (301 - 600)</option>
-                  <option value="HIGH">Premium (601+)</option>
+                  <option value="ALL">All</option>
+                  <option value="VEG">Veg</option>
+                  <option value="NON_VEG">Non-veg</option>
                 </select>
               </div>
             </div>
@@ -461,14 +460,17 @@ const Home = () => {
                   </p>
                 </div>
               ) : (
-                <div className="restaurants-list">
-                  {filteredRestaurants.map((restaurant) => (
-                    <RestaurantCard
-                      key={restaurant.id}
-                      restaurant={restaurant}
-                      onClick={() => handleRestaurantClick(restaurant)}
-                    />
-                  ))}
+                <div className="all-restaurants-section">
+                  <h2 className="all-restaurants-heading">All Restaurants</h2>
+                  <div className="restaurants-list">
+                    {filteredRestaurants.map((restaurant) => (
+                      <RestaurantCard
+                        key={restaurant.id}
+                        restaurant={restaurant}
+                        onClick={() => handleRestaurantClick(restaurant)}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
 

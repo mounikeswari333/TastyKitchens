@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -18,6 +18,9 @@ export const sortByOptions = [
 ];
 
 function App() {
+  const location = useLocation();
+  const isLoginRoute = location.pathname === "/login";
+
   return (
     <ThemeProvider>
       <CartProvider>
@@ -58,7 +61,7 @@ function App() {
             />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
-          <Chatbot />
+          {!isLoginRoute && <Chatbot />}
         </FavoritesProvider>
       </CartProvider>
     </ThemeProvider>

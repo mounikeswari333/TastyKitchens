@@ -37,8 +37,16 @@ const Navbar = () => {
           <h1 className="navbar-logo-text">Tasty Kitchens</h1>
         </Link>
 
-        <button className="mobile-menu-icon" onClick={toggleMobileMenu}>
-         <span></span>
+        <button
+          type="button"
+          className={`mobile-menu-icon ${isMobileMenuOpen ? "active" : ""}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
 
         <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>

@@ -20,16 +20,15 @@ const FoodItem = ({ foodItem, onAddToCart }) => {
   };
 
   const handleAddToCart = () => {
-    if (quantity > 0) {
-      onAddToCart({
-        id,
-        name,
-        cost,
-        imageUrl: image_url,
-        quantity,
-      });
-      setQuantity(0);
-    }
+    const nextQuantity = quantity > 0 ? quantity : 1;
+    onAddToCart({
+      id,
+      name,
+      cost,
+      imageUrl: image_url,
+      quantity: nextQuantity,
+    });
+    setQuantity(0);
   };
 
   const handleToggleFavorite = () => {
@@ -63,6 +62,7 @@ const FoodItem = ({ foodItem, onAddToCart }) => {
             <button
               testid="decrement-count"
               className="quantity-button"
+              type="button"
               onClick={handleDecrement}
             >
               -
@@ -73,16 +73,19 @@ const FoodItem = ({ foodItem, onAddToCart }) => {
             <button
               testid="increment-count"
               className="quantity-button"
+              type="button"
               onClick={handleIncrement}
             >
               +
             </button>
           </div>
-          {quantity > 0 && (
-            <button className="add-to-cart-button" onClick={handleAddToCart}>
-              ADD TO CART
-            </button>
-          )}
+          <button
+            type="button"
+            className="add-to-cart-button"
+            onClick={handleAddToCart}
+          >
+            {quantity > 0 ? "ADD TO CART" : "ADD"}
+          </button>
         </div>
       </div>
     </div>

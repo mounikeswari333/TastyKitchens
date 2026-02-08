@@ -178,7 +178,7 @@
 
 .restaurants-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
@@ -188,6 +188,17 @@
 }
 
 .recent-heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.all-restaurants-section {
+  margin-bottom: 32px;
+}
+
+.all-restaurants-heading {
   font-size: 24px;
   font-weight: 700;
   color: var(--text);
@@ -221,6 +232,8 @@
   align-items: center;
   gap: 16px;
   margin: 40px 0;
+  position: relative;
+  z-index: 1;
 }
 
 .pagination-button {
@@ -233,6 +246,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
+  touch-action: manipulation;
 }
 
 .pagination-button:hover:not(:disabled) {
@@ -356,6 +370,18 @@
   line-height: 1.6;
 }
 
+@media screen and (max-width: 1200px) {
+  .restaurants-list {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .restaurants-list {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
 /* Slick carousel custom styles */
 .slick-dots {
   bottom: 20px;
@@ -429,6 +455,11 @@
 
   .pagination-info {
     font-size: 16px;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .testimonials-section {

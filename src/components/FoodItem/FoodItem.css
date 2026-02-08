@@ -96,6 +96,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
+  touch-action: manipulation;
 }
 
 .quantity-button:hover {
@@ -121,6 +122,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
+  touch-action: manipulation;
 }
 
 .add-to-cart-button:hover {

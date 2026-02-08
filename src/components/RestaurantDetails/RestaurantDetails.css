@@ -133,8 +133,20 @@
 
 .food-items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
   gap: 24px;
+}
+
+@media screen and (max-width: 1100px) {
+  .food-items-grid {
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .food-items-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
 }
 
 .error-message {
